@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { fetchJserFeed } from "./lib/fetchJser";
 import { fetchZennTopicFeed } from "./lib/fetchZennTopic";
 import { FeedList } from "./components/FeedList";
