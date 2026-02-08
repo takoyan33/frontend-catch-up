@@ -1,13 +1,11 @@
-import { fetchJserFeed } from "./lib/fetchJser";
-import { fetchZennTopicFeed } from "./lib/fetchZennTopic";
-import { FeedList } from "./components/FeedList";
-import { fetchColissFeed } from "./lib/fetchColissFeed";
-import { fetchQiitaTrendFeed } from "./lib/fetchQiitaTrend";
-import { fetchHatenaTechFeed } from "./lib/fetchHatenaTechFeed";
-import { fetchYouTubeFeed } from "./lib/fetchYouTubeFeed";
-import { fetchLogRocket } from "./lib/fetchLogRocket";
-
-export const revalidate = 60 * 30;
+import { fetchJserFeed } from "../lib/fetchJser";
+import { fetchZennTopicFeed } from "../lib/fetchZennTopic";
+import { FeedList } from "../components/FeedList";
+import { fetchColissFeed } from "../lib/fetchColissFeed";
+import { fetchQiitaTrendFeed } from "../lib/fetchQiitaTrend";
+import { fetchHatenaTechFeed } from "../lib/fetchHatenaTechFeed";
+import { fetchYouTubeFeed } from "../lib/fetchYouTubeFeed";
+import { fetchLogRocket } from "../lib/fetchLogRocket";
 
 export default async function Home() {
   const jserItems = await fetchJserFeed();
