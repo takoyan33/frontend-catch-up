@@ -7,6 +7,8 @@ import { fetchHatenaTechFeed } from "../lib/fetchHatenaTechFeed";
 import { fetchYouTubeFeed } from "../lib/fetchYouTubeFeed";
 import { fetchLogRocket } from "../lib/fetchLogRocket";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const jserItems = await fetchJserFeed();
   const zennTSItems = await fetchZennTopicFeed("typescript");
