@@ -1,11 +1,12 @@
-import { fetchJserFeed } from "../lib/fetchJser";
-import { fetchZennTopicFeed } from "../lib/fetchZennTopic";
-import { FeedList } from "../components/FeedList";
-import { fetchColissFeed } from "../lib/fetchColissFeed";
-import { fetchQiitaTrendFeed } from "../lib/fetchQiitaTrend";
-import { fetchHatenaTechFeed } from "../lib/fetchHatenaTechFeed";
-import { fetchYouTubeFeed } from "../lib/fetchYouTubeFeed";
-import { fetchLogRocket } from "../lib/fetchLogRocket";
+import { fetchJserFeed } from "@/lib//fetchJser";
+import { fetchZennTopicFeed } from "@/lib//fetchZennTopic";
+import { FeedList } from "@/components/FeedList";
+import { fetchColissFeed } from "@/lib//fetchColissFeed";
+import { fetchQiitaTrendFeed } from "@/lib//fetchQiitaTrend";
+import { fetchHatenaTechFeed } from "@/lib//fetchHatenaTechFeed";
+import { fetchYouTubeFeed } from "@/lib//fetchYouTubeFeed";
+import { fetchLogRocket } from "@/lib//fetchLogRocket";
+import { fetchICS } from "@/lib/fetchICS";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +20,7 @@ export default async function Home() {
   const nextjsItems = await fetchZennTopicFeed("nextjs");
   const youtubeItems = await fetchYouTubeFeed();
   const logRocketItems = await fetchLogRocket();
+  const IcsItems = await fetchICS();
 
   return (
     <div className="min-h-screen bg-zinc-50 px-6 py-12 dark:bg-black">
@@ -73,6 +75,11 @@ export default async function Home() {
           <section>
             <h2 className="mb-4 text-xl font-semibold">logRocket</h2>
             <FeedList items={logRocketItems} />
+          </section>
+
+          <section>
+            <h2 className="mb-4 text-xl font-semibold">ICS Media</h2>
+            <FeedList items={IcsItems} />
           </section>
         </div>
       </main>
