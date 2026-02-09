@@ -7,6 +7,8 @@ import { fetchHatenaTechFeed } from "@/lib//fetchHatenaTechFeed";
 import { fetchYouTubeFeed } from "@/lib//fetchYouTubeFeed";
 import { fetchLogRocket } from "@/lib//fetchLogRocket";
 import { fetchICS } from "@/lib/fetchICS";
+import { fetchCodeZine } from "@/lib/fetchCodeZine";
+import { fetchCompanyBlog } from "@/lib/fetchCompanyBlog";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +23,8 @@ export default async function Home() {
   const youtubeItems = await fetchYouTubeFeed();
   const logRocketItems = await fetchLogRocket();
   const IcsItems = await fetchICS();
+  const codeZineItems = await fetchCodeZine();
+  const fetchCompanyItem = await fetchCompanyBlog();
 
   return (
     <div className="min-h-screen bg-zinc-50 px-6 py-12 dark:bg-black">
@@ -80,6 +84,16 @@ export default async function Home() {
           <section>
             <h2 className="mb-4 text-xl font-semibold">ICS Media</h2>
             <FeedList items={IcsItems} />
+          </section>
+
+          <section>
+            <h2 className="mb-4 text-xl font-semibold">CodeZine</h2>
+            <FeedList items={codeZineItems} />
+          </section>
+
+          <section>
+            <h2 className="mb-4 text-xl font-semibold">社内ブログ</h2>
+            <FeedList items={fetchCompanyItem} />
           </section>
         </div>
       </main>
