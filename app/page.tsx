@@ -32,7 +32,7 @@ export default async function Home() {
     fetchRss("https://b.hatena.ne.jp/entrylist/it.rss"),
     fetchRss("https://blog.logrocket.com/feed/"),
     fetchRss("https://ics.media/feed/atom.xml"),
-    fetchRss("https://ics.media/feed/atom.xml"),
+    fetchRss("https://codezine.jp/rss/new/20/index.xml"),
     fetchRss("https://yamadashy.github.io/tech-blog-rss-feed/feeds/rss.xml"),
     fetchRss(
       "https://raw.githubusercontent.com/0xSMW/rss-feeds/main/feeds/feed_anthropic_news.xml"
