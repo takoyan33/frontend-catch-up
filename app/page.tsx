@@ -1,30 +1,63 @@
-import { fetchJserFeed } from "@/lib//fetchJser";
-import { fetchZennTopicFeed } from "@/lib//fetchZennTopic";
+import { fetchZennTopicFeed } from "@/lib/fetchZennTopic";
 import { FeedList } from "@/components/FeedList";
-import { fetchColissFeed } from "@/lib//fetchColissFeed";
-import { fetchQiitaTrendFeed } from "@/lib//fetchQiitaTrend";
-import { fetchHatenaTechFeed } from "@/lib//fetchHatenaTechFeed";
-import { fetchYouTubeFeed } from "@/lib//fetchYouTubeFeed";
-import { fetchLogRocket } from "@/lib//fetchLogRocket";
-import { fetchICS } from "@/lib/fetchICS";
-import { fetchCodeZine } from "@/lib/fetchCodeZine";
-import { fetchCompanyBlog } from "@/lib/fetchCompanyBlog";
+import { fetchYouTubeFeed } from "@/lib/fetchYouTubeFeed";
+import { fetchRss } from "@/lib/fetchRss";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const jserItems = await fetchJserFeed();
-  const zennTSItems = await fetchZennTopicFeed("typescript");
-  const zennReactItems = await fetchZennTopicFeed("react");
-  const colissItems = await fetchColissFeed();
-  const qiitaItems = await fetchQiitaTrendFeed();
-  const hatenaItems = await fetchHatenaTechFeed();
-  const nextjsItems = await fetchZennTopicFeed("nextjs");
-  const youtubeItems = await fetchYouTubeFeed();
-  const logRocketItems = await fetchLogRocket();
-  const IcsItems = await fetchICS();
-  const codeZineItems = await fetchCodeZine();
-  const fetchCompanyItem = await fetchCompanyBlog();
+  const [
+    jserItems,
+    zennTSItems,
+    zennReactItems,
+    nextjsItems,
+    youtubeItems,
+    colissItems,
+    qiitaItems,
+    hatenaItems,
+    logRocketItems,
+    icsItems,
+    codeZineItems,
+    companyItems,
+    anthropicItems,
+    openAiItems,
+  ] = await Promise.all([
+    fetchRss("https://realtime.jser.info/feed.xml"),
+    fetchZennTopicFeed("typescript"),
+    fetchZennTopicFeed("react"),
+    fetchZennTopicFeed("nextjs"),
+    fetchYouTubeFeed(),
+    fetchRss("https://coliss.com/feed/"),
+    fetchRss("https://qiita.com/popular-items/feed.atom"),
+    fetchRss("https://b.hatena.ne.jp/entrylist/it.rss"),
+    fetchRss("https://blog.logrocket.com/feed/"),
+    fetchRss("https://ics.media/feed/atom.xml"),
+    fetchRss("https://ics.media/feed/atom.xml"),
+    fetchRss("https://yamadashy.github.io/tech-blog-rss-feed/feeds/rss.xml"),
+    fetchRss(
+      "https://raw.githubusercontent.com/0xSMW/rss-feeds/main/feeds/feed_anthropic_news.xml"
+    ),
+    fetchRss(
+      "https://raw.githubusercontent.com/0xSMW/rss-feeds/main/feeds/feed_openai_alignment.xml"
+    ),
+  ]);
+
+  const sections = [
+    { title: "JSer.info", items: jserItems },
+    { title: "Zenn（TypeScript）", items: zennTSItems },
+    { title: "Coliss（Web制作）", items: colissItems },
+    { title: "Qiitaトレンド", items: qiitaItems },
+    { title: "ハテナ新着", items: hatenaItems },
+    { title: "ムーザルちゃんねる", items: youtubeItems },
+    { title: "Zenn（React）", items: zennReactItems },
+    { title: "Zenn（Next.js）", items: nextjsItems },
+    { title: "logRocket", items: logRocketItems },
+    { title: "ICS Media", items: icsItems },
+    { title: "CodeZine", items: codeZineItems },
+    { title: "社内ブログ", items: companyItems },
+    { title: "Anthropic", items: anthropicItems },
+    { title: "OpenAI", items: openAiItems },
+  ];
 
   return (
     <div className="min-h-screen bg-zinc-50 px-6 py-12 dark:bg-black">
@@ -36,65 +69,12 @@ export default async function Home() {
         </header>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          <section>
-            <h2 className="mb-4 text-xl font-semibold">JSer.info</h2>
-            <FeedList items={jserItems} />
-          </section>
-
-          <section>
-            <h2 className="mb-4 text-xl font-semibold">Zenn（TypeScript）</h2>
-            <FeedList items={zennTSItems} />
-          </section>
-
-          <section>
-            <h2 className="mb-4 text-xl font-semibold">Coliss（Web制作）</h2>
-            <FeedList items={colissItems} />
-          </section>
-
-          <section>
-            <h2 className="mb-4 text-xl font-semibold">Qiitaトレンド</h2>
-            <FeedList items={qiitaItems} />
-          </section>
-
-          <section>
-            <h2 className="mb-4 text-xl font-semibold">ハテナ新着</h2>
-            <FeedList items={hatenaItems} />
-          </section>
-
-          <section>
-            <h2 className="mb-4 text-xl font-semibold">ムーザルちゃんねる</h2>
-            <FeedList items={youtubeItems} />
-          </section>
-
-          <section>
-            <h2 className="mb-4 text-xl font-semibold">Zenn（React）</h2>
-            <FeedList items={zennReactItems} />
-          </section>
-
-          <section>
-            <h2 className="mb-4 text-xl font-semibold">Zenn(NextJs)</h2>
-            <FeedList items={nextjsItems} />
-          </section>
-
-          <section>
-            <h2 className="mb-4 text-xl font-semibold">logRocket</h2>
-            <FeedList items={logRocketItems} />
-          </section>
-
-          <section>
-            <h2 className="mb-4 text-xl font-semibold">ICS Media</h2>
-            <FeedList items={IcsItems} />
-          </section>
-
-          <section>
-            <h2 className="mb-4 text-xl font-semibold">CodeZine</h2>
-            <FeedList items={codeZineItems} />
-          </section>
-
-          <section>
-            <h2 className="mb-4 text-xl font-semibold">社内ブログ</h2>
-            <FeedList items={fetchCompanyItem} />
-          </section>
+          {sections.map(({ title, items }) => (
+            <section key={title}>
+              <h2 className="mb-4 text-xl font-semibold">{title}</h2>
+              <FeedList items={items} />
+            </section>
+          ))}
         </div>
       </main>
     </div>
