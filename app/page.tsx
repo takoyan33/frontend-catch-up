@@ -5,7 +5,39 @@ import { fetchRss } from "@/lib/fetchRss";
 
 export const dynamic = "force-dynamic";
 
+/** 取得に失敗した場合は空配列を返す */
+function safeFeed<T>(promise: Promise<T[]>): Promise<T[]> {
+  return promise.catch(() => [] as T[]);
+}
+
 export default async function Home() {
+  const results = await Promise.all([
+    safeFeed(fetchRss("https://realtime.jser.info/feed.xml")),
+    safeFeed(fetchZennTopicFeed("typescript")),
+    safeFeed(fetchZennTopicFeed("react")),
+    safeFeed(fetchZennTopicFeed("nextjs")),
+    safeFeed(fetchYouTubeFeed()),
+    safeFeed(fetchRss("https://coliss.com/feed/")),
+    safeFeed(fetchRss("https://qiita.com/popular-items/feed.atom")),
+    safeFeed(fetchRss("https://b.hatena.ne.jp/entrylist/it.rss")),
+    safeFeed(fetchRss("https://blog.logrocket.com/feed/")),
+    safeFeed(fetchRss("https://ics.media/feed/atom.xml")),
+    safeFeed(fetchRss("https://codezine.jp/rss/new/20/index.xml")),
+    safeFeed(
+      fetchRss("https://yamadashy.github.io/tech-blog-rss-feed/feeds/rss.xml")
+    ),
+    safeFeed(
+      fetchRss(
+        "https://raw.githubusercontent.com/0xSMW/rss-feeds/main/feeds/feed_anthropic_news.xml"
+      )
+    ),
+    safeFeed(
+      fetchRss(
+        "https://raw.githubusercontent.com/0xSMW/rss-feeds/main/feeds/feed_openai_alignment.xml"
+      )
+    ),
+  ]);
+
   const [
     jserItems,
     zennTSItems,
@@ -21,26 +53,7 @@ export default async function Home() {
     companyItems,
     anthropicItems,
     openAiItems,
-  ] = await Promise.all([
-    fetchRss("https://realtime.jser.info/feed.xml"),
-    fetchZennTopicFeed("typescript"),
-    fetchZennTopicFeed("react"),
-    fetchZennTopicFeed("nextjs"),
-    fetchYouTubeFeed(),
-    fetchRss("https://coliss.com/feed/"),
-    fetchRss("https://qiita.com/popular-items/feed.atom"),
-    fetchRss("https://b.hatena.ne.jp/entrylist/it.rss"),
-    fetchRss("https://blog.logrocket.com/feed/"),
-    fetchRss("https://ics.media/feed/atom.xml"),
-    fetchRss("https://codezine.jp/rss/new/20/index.xml"),
-    fetchRss("https://yamadashy.github.io/tech-blog-rss-feed/feeds/rss.xml"),
-    fetchRss(
-      "https://raw.githubusercontent.com/0xSMW/rss-feeds/main/feeds/feed_anthropic_news.xml"
-    ),
-    fetchRss(
-      "https://raw.githubusercontent.com/0xSMW/rss-feeds/main/feeds/feed_openai_alignment.xml"
-    ),
-  ]);
+  ] = results;
 
   const sections = [
     { title: "JSer.info", items: jserItems },

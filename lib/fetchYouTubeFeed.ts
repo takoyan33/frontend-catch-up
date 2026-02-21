@@ -13,9 +13,15 @@ export async function fetchYouTubeFeed(): Promise<FeedItem[]> {
     "https://www.youtube.com/feeds/videos.xml?channel_id=UCLPHXwLp90A5R69Eltxo-sg";
   const feed = await parser.parseURL(rssURL);
 
-  return feed.items.map((item) => ({
-    title: item.title ?? "",
-    link: item.link ?? "",
-    pubDate: item.pubDate,
-  }));
+  return feed.items
+    .map((item) => ({
+      title: item.title ?? "",
+      link: item.link ?? "",
+      pubDate: item.pubDate,
+    }))
+    .sort((a, b) => {
+      const timeA = a.pubDate ? new Date(a.pubDate).getTime() : 0;
+      const timeB = b.pubDate ? new Date(b.pubDate).getTime() : 0;
+      return timeB - timeA;
+    });
 }
