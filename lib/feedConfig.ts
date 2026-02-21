@@ -1,0 +1,88 @@
+import { fetchZennTopicFeed } from "@/lib/fetchZennTopic";
+import { fetchYouTubeFeed } from "@/lib/fetchYouTubeFeed";
+import { fetchRss } from "@/lib/fetchRss";
+
+export type FeedItem = {
+  title: string;
+  link: string;
+  pubDate?: string;
+};
+
+export type Section = {
+  title: string;
+  items: FeedItem[];
+};
+
+/** 取得に失敗した場合は空配列を返す */
+function safeFeed<T>(promise: Promise<T[]>): Promise<T[]> {
+  return promise.catch(() => [] as T[]);
+}
+
+/** 全フィードを取得し、セクション一覧と更新時刻を返す */
+export async function getAllSections(): Promise<{
+  sections: Section[];
+  updatedAt: Date;
+}> {
+  const results = await Promise.all([
+    safeFeed(fetchRss("https://realtime.jser.info/feed.xml")),
+    safeFeed(fetchZennTopicFeed("typescript")),
+    safeFeed(fetchZennTopicFeed("react")),
+    safeFeed(fetchZennTopicFeed("nextjs")),
+    safeFeed(fetchYouTubeFeed()),
+    safeFeed(fetchRss("https://coliss.com/feed/")),
+    safeFeed(fetchRss("https://qiita.com/popular-items/feed.atom")),
+    safeFeed(fetchRss("https://b.hatena.ne.jp/entrylist/it.rss")),
+    safeFeed(fetchRss("https://blog.logrocket.com/feed/")),
+    safeFeed(fetchRss("https://ics.media/feed/atom.xml")),
+    safeFeed(fetchRss("https://codezine.jp/rss/new/20/index.xml")),
+    safeFeed(
+      fetchRss("https://yamadashy.github.io/tech-blog-rss-feed/feeds/rss.xml")
+    ),
+    safeFeed(
+      fetchRss(
+        "https://raw.githubusercontent.com/0xSMW/rss-feeds/main/feeds/feed_anthropic_news.xml"
+      )
+    ),
+    safeFeed(
+      fetchRss(
+        "https://raw.githubusercontent.com/0xSMW/rss-feeds/main/feeds/feed_openai_alignment.xml"
+      )
+    ),
+  ]);
+
+  const [
+    jserItems,
+    zennTSItems,
+    zennReactItems,
+    nextjsItems,
+    youtubeItems,
+    colissItems,
+    qiitaItems,
+    hatenaItems,
+    logRocketItems,
+    icsItems,
+    codeZineItems,
+    companyItems,
+    anthropicItems,
+    openAiItems,
+  ] = results;
+
+  const sections: Section[] = [
+    { title: "JSer.info", items: jserItems },
+    { title: "Zenn（TypeScript）", items: zennTSItems },
+    { title: "Coliss（Web制作）", items: colissItems },
+    { title: "Qiitaトレンド", items: qiitaItems },
+    { title: "ハテナ新着", items: hatenaItems },
+    { title: "ムーザルちゃんねる", items: youtubeItems },
+    { title: "Zenn（React）", items: zennReactItems },
+    { title: "Zenn（Next.js）", items: nextjsItems },
+    { title: "logRocket", items: logRocketItems },
+    { title: "ICS Media", items: icsItems },
+    { title: "CodeZine", items: codeZineItems },
+    { title: "社内ブログ", items: companyItems },
+    { title: "Anthropic", items: anthropicItems },
+    { title: "OpenAI", items: openAiItems },
+  ];
+
+  return { sections, updatedAt: new Date() };
+}
