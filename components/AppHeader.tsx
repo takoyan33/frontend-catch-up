@@ -2,8 +2,8 @@ import Link from "next/link";
 
 type Props = {
   title: string;
-  updatedAt: Date;
-  currentPage: "home" | "timeline";
+  updatedAt?: Date;
+  currentPage: "home" | "timeline" | "favorites";
 };
 
 /** 更新時刻の表示用フォーマット */
@@ -26,12 +26,9 @@ export function AppHeader({ title, updatedAt, currentPage }: Props) {
         </h1>
         <nav className="flex items-center gap-3 text-sm">
           {currentPage === "home" ? (
-            <Link
-              href="/timeline"
-              className="text-zinc-600 underline-offset-2 hover:underline dark:text-zinc-400"
-            >
-              今日のまとめ
-            </Link>
+            <span className="font-medium text-zinc-900 dark:text-zinc-100">
+              ホーム
+            </span>
           ) : (
             <Link
               href="/"
@@ -40,11 +37,37 @@ export function AppHeader({ title, updatedAt, currentPage }: Props) {
               ホーム
             </Link>
           )}
+          {currentPage === "timeline" ? (
+            <span className="font-medium text-zinc-900 dark:text-zinc-100">
+              今日のまとめ
+            </span>
+          ) : (
+            <Link
+              href="/timeline"
+              className="text-zinc-600 underline-offset-2 hover:underline dark:text-zinc-400"
+            >
+              今日のまとめ
+            </Link>
+          )}
+          {currentPage === "favorites" ? (
+            <span className="font-medium text-zinc-900 dark:text-zinc-100">
+              お気に入り
+            </span>
+          ) : (
+            <Link
+              href="/favorites"
+              className="text-zinc-600 underline-offset-2 hover:underline dark:text-zinc-400"
+            >
+              お気に入り
+            </Link>
+          )}
         </nav>
       </div>
-      <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
-        このページのデータは {formatUpdatedAt(updatedAt)} 更新
-      </p>
+      {updatedAt ? (
+        <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+          このページのデータは {formatUpdatedAt(updatedAt)} 更新
+        </p>
+      ) : null}
     </header>
   );
 }

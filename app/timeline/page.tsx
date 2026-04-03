@@ -6,6 +6,7 @@ import {
 } from "@/lib/dateUtils";
 import { AppHeader } from "@/components/AppHeader";
 import { TimelineTabs } from "@/components/TimelineTabs";
+import { TimelineList } from "@/components/TimelineList";
 
 export const dynamic = "force-dynamic";
 
@@ -77,38 +78,7 @@ export default async function TimelinePage({ searchParams }: PageProps) {
             該当する記事はありません
           </p>
         ) : (
-          <ul className="space-y-3">
-            {filtered.map((item, index) => (
-              <li
-                key={`${item.link}-${index}`}
-                className="rounded-lg border border-zinc-200 bg-white p-4 transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800"
-              >
-                <a
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block"
-                >
-                  <span className="mb-1 inline-block rounded bg-zinc-200 px-2 py-0.5 text-xs text-zinc-600 dark:bg-zinc-700 dark:text-zinc-300">
-                    {item.source}
-                  </span>
-                  <h3 className="text-base font-medium text-zinc-900 dark:text-zinc-50">
-                    {item.title}
-                  </h3>
-                  {item.pubDate && (
-                    <p className="mt-1 text-sm text-zinc-500">
-                      {new Date(item.pubDate).toLocaleString("ja-JP", {
-                        month: "numeric",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </p>
-                  )}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <TimelineList items={filtered} />
         )}
       </main>
     </div>
