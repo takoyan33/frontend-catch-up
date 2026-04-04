@@ -1,4 +1,5 @@
 export const FAVORITES_STORAGE_KEY = "catchup:favorites";
+export const FAVORITES_MAX_ITEMS = 500;
 const FAVORITES_EVENT = "favorites:changed";
 const EMPTY_FAVORITES: FavoriteItem[] = [];
 let favoritesCacheRaw: string | null = null;
@@ -86,7 +87,10 @@ export function toggleFavorite(item: Omit<FavoriteItem, "savedAt">) {
     return { items: next, active: false };
   }
 
-  const next = [{ ...item, savedAt: new Date().toISOString() }, ...current];
+  const next = [{ ...item, savedAt: new Date().toISOString() }, ...current].slice(
+    0,
+    FAVORITES_MAX_ITEMS
+  );
   writeFavorites(next);
   return { items: next, active: true };
 }
